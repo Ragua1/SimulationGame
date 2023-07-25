@@ -1,2 +1,9 @@
 ﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+using SimulationGame.Logic;
+
+Console.WriteLine("Hello, Player!");
+
+var game = new GameLogic();
+game.NewGame();
+
+Console.WriteLine("Bye!");
