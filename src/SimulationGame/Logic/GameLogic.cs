@@ -231,6 +231,7 @@ internal class GameLogic
     }
 
     /// <summary>
+    /// 
     /// Show list of elements (roads, settlements, etc.)
     /// </summary>
     /// <param name="elements">Collection of <see cref="Element"/></param>
