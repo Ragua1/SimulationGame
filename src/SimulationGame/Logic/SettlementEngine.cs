@@ -1,8 +1,6 @@
 ﻿using SimulationGame.Enums;
-using System.Runtime.CompilerServices;
 using SimulationGame.Models;
 
-[assembly: InternalsVisibleTo("SimulationGame.Test")]
 namespace SimulationGame.Logic;
 
 internal class SettlementEngine
@@ -46,6 +44,21 @@ internal class SettlementEngine
         Settlements.Add(settlement);
     }
 
+    internal void AddSettlement(string name, string description, SettlementTypes type, int population)
+    {
+        var settlement = new Settlement
+        {
+            Name = name,
+            Description = description,
+            Type = type,
+            Population = population,
+        };
+
+        GeneratePopulation(settlement);
+
+        Settlements.Add(settlement);
+    }
+
     public void RemoveSettlement(Settlement settlement)
     {
         Settlements.Remove(settlement);
@@ -53,7 +66,7 @@ internal class SettlementEngine
 
     public void GeneratePopulation(Settlement settlement)
     {
-        settlement.Population = Random.Next(1 - 100);
+        settlement.Population = Random.Next(1, 100);
     }
 
     public static void ChceckSettlementSize(Settlement settlement)
