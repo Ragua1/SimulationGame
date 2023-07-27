@@ -1,8 +1,11 @@
-﻿namespace SimulationGame.Models;
+﻿using SimulationGame.Enums;
 
-internal class Settlement : Element
+namespace SimulationGame.Models;
+
+internal class Settlement : IElement
 {
     public string Description { get; set; }
-    public string Type { get; set; }
+    public SettlementTypes Type { get; set; }
     public int Population { get; set; }
+    public string Name { get; set; }
 }

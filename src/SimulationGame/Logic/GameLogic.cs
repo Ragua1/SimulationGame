@@ -12,6 +12,8 @@ internal class GameLogic
 
     public void NewGame()
     {
+        GameEngine.AddSettlement("", "");
+
         GameLoop();
     }
 
@@ -22,6 +24,8 @@ internal class GameLogic
 
     public void GameMenu()
     {
+        Console.Clear();
+
         while (true)
         {
             // Menu header
@@ -33,7 +37,7 @@ internal class GameLogic
 
             // Menu options
             Console.WriteLine("Select action:");
-            Console.WriteLine("1. Roads");
+            Console.WriteLine("1. Routes");
             Console.WriteLine("2. Settlements");
             Console.WriteLine("3. Exit");
 
@@ -41,12 +45,13 @@ internal class GameLogic
             switch (input)
             {
                 case "1":
-                    RoadsMenu();
+                    RoutesMenu();
                     break;
                 case "2":
                     SettlementsMenu();
                     break;
                 case "3":
+                    Environment.Exit(0);
                     return;
                 default:
                     Console.WriteLine("Invalid input");
@@ -55,38 +60,40 @@ internal class GameLogic
         }
     }
 
-    public void RoadsMenu()
+    #region Routes region
+    public void RoutesMenu()
     {
         while (true)
         {
             // Menu header
-            Console.WriteLine(  );
+            Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("--- Roads Menu ---");
+            Console.WriteLine("--- Routes Menu ---");
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine();
 
             // Menu options
             Console.WriteLine("Select action:");
-            Console.WriteLine("1. Build roads");
-            Console.WriteLine("2. Remove roads");
-            Console.WriteLine("3. Road details");
+            Console.WriteLine("1. Build routes");
+            Console.WriteLine("2. Remove routes");
+            Console.WriteLine("3. Rout details");
             Console.WriteLine("4. Back to Main Menu");
 
             var input = Console.ReadLine();
             switch (input)
             {
                 case "1":
-                    BuildRoad();
+                    BuildRoute();
                     break;
                 case "2":
-                    RemoveRoads();
+                    RemoveRoutes();
                     break;
                 case "3":
-                    ViewRoads();
+                    ViewRoutes();
                     break;
                 case "4":
-                    return;
+                    GameMenu();
+                    break;
                 default:
                     Console.WriteLine("Invalid input");
                     break;
@@ -94,6 +101,132 @@ internal class GameLogic
         }
     }
 
+    public void BuildRoute()
+    {
+        // Menu header
+        Console.WriteLine();
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine("--- Build routes ---");
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine();
+
+        Console.WriteLine("Choose poin A and point B");
+
+        Console.WriteLine();
+
+        var settlements = GameEngine.GetSettlements();
+        settlements.ShowListOfElements();
+
+        Console.WriteLine(string.Empty);
+
+        Console.Write("Point A: ");
+        var a = Console.ReadLine();
+        Console.Write("Point B: ");
+        var b = Console.ReadLine();
+        Console.Write("Name: ");
+        var name = Console.ReadLine();
+
+        // TODO add input protection
+
+        GameEngine.AddRoad(name, settlements[int.Parse(a) - 1], settlements[int.Parse(b) - 1]);
+
+        GameMenu();
+    }
+
+    public void RemoveRoutes()
+    {
+        // Menu header
+        Console.WriteLine(string.Empty);
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine("--- Remove routes ---");
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine(string.Empty);
+
+        var routes = GameEngine.GetRoutes();
+        if (!routes.Any())
+        {
+            Console.WriteLine("There are no routes!");
+            Console.WriteLine();
+            return;
+        }
+
+        Console.WriteLine("Whitch route do you want to remove?");
+
+        Console.WriteLine(string.Empty);
+        routes.ShowListOfElements();
+        Console.WriteLine(string.Empty);
+
+        var x = Console.ReadLine();
+
+        GameEngine.RemoveRoutes(routes[int.Parse(x) - 1]);
+
+        GameMenu();
+    }
+
+    public void ViewRoutes()
+    {
+        // Menu header
+        Console.WriteLine(string.Empty);
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine("--- View routes ---");
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine();
+
+        var routes = GameEngine.GetRoutes();
+        if (!routes.Any())
+        {
+            Console.WriteLine("There are no routes!");
+            Console.WriteLine();
+            return;
+        }
+
+        Console.WriteLine("Which route do you want to see?");
+        Console.WriteLine();
+        routes.ShowListOfElements();
+        Console.WriteLine();
+
+        // TODO add input protection
+
+        var x = Console.ReadLine();
+        Console.WriteLine();
+        Route(routes[int.Parse(x) - 1]);
+    }
+
+    public void Route(Route road)
+    {
+        Console.Write("Name: ");
+        Console.WriteLine(road.Name);
+
+        Console.Write("Start: ");
+        Console.WriteLine(road.SettlementBegin.Name);
+
+        Console.Write("End: ");
+        Console.WriteLine(road.SettlementEnd.Name);
+
+        Console.WriteLine();
+        Console.WriteLine("1. Back to Route Menu");
+        Console.WriteLine("2. Back to Main Menu");
+        while (true)
+        {
+            switch (Console.ReadLine())
+            {
+                case "1":
+                    RoutesMenu();
+                    break;
+
+                case "2":
+                    GameMenu();
+                    break;
+
+                default:
+                    Console.WriteLine("Invalid input");
+                    break;
+            }
+        }
+    }
+    #endregion
+
+    #region SettlementsMenu
     public void SettlementsMenu()
     {
         while (true)
@@ -105,6 +238,9 @@ internal class GameLogic
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine();
 
+            var settlements = GameEngine.GetSettlements();
+            settlements.ShowListOfElements();
+
             // Menu options
             Console.WriteLine("Select actions:");
             Console.WriteLine("1. Settlement details");
@@ -113,10 +249,11 @@ internal class GameLogic
             var input = Console.ReadLine();
             switch (input)
             {
-                case "1":                    
+                case "1":
                     break;
                 case "2":
-                    return;
+                    GameMenu();
+                    break;
                 default:
                     Console.WriteLine("Invalid input");
                     break;
@@ -124,122 +261,38 @@ internal class GameLogic
         }
     }
 
-    public void BuildRoad()
+    public void SettlementDetails()
     {
         // Menu header
-        Console.WriteLine(  );
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("--- Build roads ---");
-        Console.ForegroundColor = ConsoleColor.White;
         Console.WriteLine();
-
-        Console.WriteLine("Choose poin A and point B");
-
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine("--- Settlements Details ---");
+        Console.ForegroundColor = ConsoleColor.White;
         Console.WriteLine();
 
         var settlements = GameEngine.GetSettlements();
-        ShowListOfElements(settlements);
-
-        Console.WriteLine(string.Empty);
-
-        Console.Write("Point A: ");
-        var a = Console.ReadLine();
-        Console.Write("Point B: ");
-        var b = Console.ReadLine();
-        Console.Write("Name: ");
-        var name = Console.ReadLine();
-
-        GameEngine.AddRoad(name, settlements[int.Parse(a)], settlements[int.Parse(b)]);
-    }
-
-    public void RemoveRoads()
-    {
-        // Menu header
-        Console.WriteLine(string.Empty);
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("--- Remove roads ---");
-        Console.ForegroundColor = ConsoleColor.White;
-        Console.WriteLine(string.Empty);
-
-        Console.WriteLine("Whitch road do you want to remove?");
-
-        Console.WriteLine(string.Empty);
-
-
-        var routes = GameEngine.GetRoutes();
-        ShowListOfElements(routes);
-
-        Console.WriteLine(string.Empty);
-
-        var x = Console.ReadLine();
-
-        // TODO remove selected road
-
-    }
-
-    public void ViewRoads()
-    {
-        // Menu header
-        Console.WriteLine(string.Empty);
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("--- View roads ---");
-        Console.ForegroundColor = ConsoleColor.White;
-        Console.WriteLine();
-
-        var roads = GameEngine.GetRoutes();
-        if (!roads.Any())
+        if (!settlements.Any())
         {
-            Console.WriteLine("There is not any route!");
-
+            Console.WriteLine("There are no settlements!");
             Console.WriteLine();
             return;
         }
 
-        Console.WriteLine("Which road do you want to see?");
-
+        Console.WriteLine("Which settlement do you want to see?");
+        Console.WriteLine();
+        settlements.ShowListOfElements();
         Console.WriteLine();
 
-        ShowListOfElements(roads);
-
-        Console.WriteLine();
-
-        // TODO sellect a road and pass it as an argument to Road();
-
+        // TODO add input protection
 
         var x = Console.ReadLine();
+        Console.WriteLine();
+        Settlement settlement = (settlements[int.Parse(x) - 1]);
 
-        Road(roads[int.Parse(x)]);
+        Console.WriteLine($"Name: {settlement.Name}");
+        Console.WriteLine($"Description: {settlement.Description}");
+        Console.WriteLine($"Population: {settlement.Population}");
     }
 
-    public void Road(Route road)
-    {
-        // TODO display details of a selected road
-
-        Console.WriteLine("1. Back to Roads Menu");
-        // TODO jump to RoadsMenu
-        while (true)
-        {
-            switch (Console.ReadLine())
-            {
-                case "1":
-                    return;
-                default:
-                    Console.WriteLine("Invalid input");
-                    break;
-            }
-        }
-    }
-
-    /// <summary>
-    /// Show list of elements (roads, settlements, etc.)
-    /// </summary>
-    /// <param name="elements">Collection of <see cref="Element"/></param>
-    private static void ShowListOfElements(IEnumerable<Element> elements)
-    {
-        for (int i = 0; i < elements.Count(); i++)
-        {
-            var e = elements.ElementAt(i);
-            Console.WriteLine($"{i}: {e.Name}");
-        }
-    }
+    #endregion
 }
