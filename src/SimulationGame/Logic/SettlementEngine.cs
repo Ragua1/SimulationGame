@@ -5,7 +5,7 @@ namespace SimulationGame.Logic;
 
 internal class SettlementEngine
 {
-    private List<Settlement> Settlements { get; set; } = new ();
+    private List<Settlement> Settlements { get; set; } = new List<Settlement>();
     private Random Random { get; } = new(DateTime.Now.Millisecond);
 
     public void InitSettlementEngine(List<Settlement>? settlements = null)
@@ -77,7 +77,7 @@ internal class SettlementEngine
 
     public void GeneratePopulation(Settlement settlement)
     {
-        settlement.Population = Random.Next(1, 100);
+        //settlement.Population = Random.Next(1, 100);
     }
 
     public static void ChceckSettlementSize(Settlement settlement)
