@@ -1,9 +1,13 @@
-﻿using SimulationGame.Models;
+﻿using System.Text.Json;
+using SimulationGame.Models;
 
 namespace SimulationGame.Logic;
 
 internal class GameLogic
 {
+    private const string SettlementsFile = "settlements.json";
+    private const string RoutesFile = "routes.json";
+    
     private GameEngine GameEngine { get; }
     public GameLogic()
     {
@@ -12,8 +16,15 @@ internal class GameLogic
 
     public void NewGame()
     {
-        GameEngine.AddSettlement("", "");
+        GameEngine.InitGameEngine();
 
+        GameMenu();
+    }
+    
+    public void LoadGame()
+    {
+        Load();
+        
         GameMenu();
     }
 
@@ -26,7 +37,24 @@ internal class GameLogic
         {
             Console.WriteLine($"{settlement.Name}: {settlement.Type}|({settlement.Population})");
         }
+        
+        Save();
+
         Console.WriteLine("---------------");
+    }
+
+    private void Save()
+    {
+        File.WriteAllText(SettlementsFile, JsonSerializer.Serialize(GameEngine.GetSettlements()));
+        File.WriteAllText(RoutesFile, JsonSerializer.Serialize(GameEngine.GetRoutes()));
+    }
+
+    private void Load()
+    {
+        var settlements = JsonSerializer.Deserialize<List<Settlement>>(File.ReadAllText(SettlementsFile));
+        var routes =  JsonSerializer.Deserialize<List<Route>>(File.ReadAllText(RoutesFile));
+        
+        GameEngine.InitGameEngine(settlements, routes);
     }
 
     public void GameMenu()

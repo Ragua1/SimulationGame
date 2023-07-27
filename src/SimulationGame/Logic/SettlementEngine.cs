@@ -5,9 +5,14 @@ namespace SimulationGame.Logic;
 
 internal class SettlementEngine
 {
-    public List<Settlement> Settlements { get; } = new List<Settlement>();
+    private List<Settlement> Settlements { get; set; } = new ();
     private Random Random { get; } = new(DateTime.Now.Millisecond);
 
+    public void InitSettlementEngine(List<Settlement>? settlements = null)
+    {
+        Settlements = settlements ?? new List<Settlement>();
+    }
+    
     public void GenerateNew()
     {
         string[] names = new string[] { "Markéta", "Romana", "Maruše", "Dana", "Karlička" };
@@ -22,14 +27,13 @@ internal class SettlementEngine
         for (int i = 0; i < 5; i++)
         {
             AddSettlement(names[i], descriptions[i]);
-            
         }
     }
     public void ProcessNextRound()
     {
         foreach (var settlement in Settlements)
         {
-
+            ChceckSettlementSize(settlement);
         }
     }
 
@@ -59,6 +63,11 @@ internal class SettlementEngine
         GeneratePopulation(settlement);
 
         Settlements.Add(settlement);
+    }
+    
+    public List<Settlement> GetSettlements()
+    {
+        return Settlements;
     }
 
     public void RemoveSettlement(Settlement settlement)

@@ -4,37 +4,40 @@ namespace SimulationGame.Logic;
 
 internal class GameEngine
 {
-    private SettlementEngine SettlementEngine { get; } = new();
-    private List<Route> Routes { get; } = new();
+    private SettlementEngine SettlementEngine { get; set; } = new();
+    private List<Route> Routes { get; set; } = new();
     private Random Random { get; } = new(DateTime.Now.Millisecond);
 
     public void ProcessNextRound()
     {
-        SettlementEngine.ProcessNextRound();
-
         foreach (var route in Routes) 
         {
             route.SettlementBegin.Population++;
             route.SettlementEnd.Population++;
         }
+        
+        SettlementEngine.ProcessNextRound();
+    }
+    
+    public void InitGameEngine(List<Settlement>? settlements = null, List<Route>? routes = null)
+    {
+        SettlementEngine.InitSettlementEngine(settlements);
+        Routes = routes ?? new List<Route>();
+        
+        if (!settlements.Any())
+        {
+            SettlementEngine.GenerateNew();
+        }
     }
 
     public void AddSettlement(string name, string description)
     {
-        if (SettlementEngine.Settlements.Count == 0)
-        {
-            SettlementEngine.GenerateNew();
-        }
-        else
-        {
-            SettlementEngine.AddSettlement(name, description);
-        }
-
+        SettlementEngine.AddSettlement(name, description);
     }
 
     public List<Settlement> GetSettlements()
     {
-        return SettlementEngine.Settlements;
+        return SettlementEngine.GetSettlements();
     }
 
     public void RemoveSettlement(Settlement settlement)
