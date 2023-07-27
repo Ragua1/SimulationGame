@@ -1,6 +1,8 @@
 ﻿using SimulationGame.Enums;
+using System.Runtime.CompilerServices;
 using SimulationGame.Models;
 
+[assembly: InternalsVisibleTo("SimulationGame.Test")]
 namespace SimulationGame.Logic;
 
 internal class SettlementEngine
