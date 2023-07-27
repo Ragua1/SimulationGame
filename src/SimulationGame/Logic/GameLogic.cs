@@ -14,12 +14,19 @@ internal class GameLogic
     {
         GameEngine.AddSettlement("", "");
 
-        GameLoop();
+        GameMenu();
     }
 
     private void GameLoop()
     {
-        GameMenu();
+        Console.WriteLine("---------------");
+        GameEngine.ProcessNextRound();
+
+        foreach (var settlement in GameEngine.GetSettlements())
+        {
+            Console.WriteLine($"{settlement.Name}: {settlement.Type}|({settlement.Population})");
+        }
+        Console.WriteLine("---------------");
     }
 
     public void GameMenu()
@@ -39,11 +46,14 @@ internal class GameLogic
             Console.WriteLine("Select action:");
             Console.WriteLine("1. Routes");
             Console.WriteLine("2. Settlements");
-            Console.WriteLine("3. Exit");
+            Console.WriteLine("3. Next round");
+            Console.WriteLine("0. Exit");
 
             var input = Console.ReadLine();
             switch (input)
             {
+                case "0":
+                    return;
                 case "1":
                     RoutesMenu();
                     break;
@@ -51,8 +61,8 @@ internal class GameLogic
                     SettlementsMenu();
                     break;
                 case "3":
-                    Environment.Exit(0);
-                    return;
+                    GameLoop();
+                    break;
                 default:
                     Console.WriteLine("Invalid input");
                     break;
@@ -103,6 +113,7 @@ internal class GameLogic
 
     public void BuildRoute()
     {
+
         // Menu header
         Console.WriteLine();
         Console.ForegroundColor = ConsoleColor.Green;
@@ -117,7 +128,7 @@ internal class GameLogic
         var settlements = GameEngine.GetSettlements();
         settlements.ShowListOfElements();
 
-        Console.WriteLine(string.Empty);
+        Console.WriteLine();
 
         Console.Write("Point A: ");
         var a = Console.ReadLine();
@@ -126,6 +137,7 @@ internal class GameLogic
         Console.Write("Name: ");
         var name = Console.ReadLine();
 
+        // TODO if route exists, throw exception
         // TODO add input protection
 
         GameEngine.AddRoad(name, settlements[int.Parse(a) - 1], settlements[int.Parse(b) - 1]);
@@ -240,18 +252,24 @@ internal class GameLogic
 
             var settlements = GameEngine.GetSettlements();
             settlements.ShowListOfElements();
+            Console.WriteLine();
 
             // Menu options
             Console.WriteLine("Select actions:");
             Console.WriteLine("1. Settlement details");
-            Console.WriteLine("2. Back to Main Menu");
+            Console.WriteLine("2. Create settlement");
+            Console.WriteLine("3. Back to Main Menu");
 
             var input = Console.ReadLine();
             switch (input)
             {
                 case "1":
+                    SettlementDetails();
                     break;
                 case "2":
+                    CreateSettlement();
+                    break;
+                case "3":
                     GameMenu();
                     break;
                 default:
@@ -259,6 +277,25 @@ internal class GameLogic
                     break;
             }
         }
+    }
+
+    private void CreateSettlement()
+    {
+        // Menu header
+        Console.WriteLine();
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine("--- Create settlement ---");
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine();
+
+        Console.Write("Name: ");
+        var name = Console.ReadLine();
+        Console.Write("Description: ");
+        var description = Console.ReadLine();
+
+        GameEngine.AddSettlement(name, description);
+
+        GameMenu();
     }
 
     public void SettlementDetails()
@@ -292,6 +329,30 @@ internal class GameLogic
         Console.WriteLine($"Name: {settlement.Name}");
         Console.WriteLine($"Description: {settlement.Description}");
         Console.WriteLine($"Population: {settlement.Population}");
+        Console.WriteLine($"Routes:");
+
+        List<Route> routes = GameEngine.GetRoutes(settlement);
+        if (routes.Count == 0)
+        {
+            Console.WriteLine("There are no attached routes.");
+        }
+        else
+        {
+            routes.ShowListOfElements();
+        }
+
+        Console.WriteLine();
+        Console.WriteLine("1. Back to main menu");
+
+        switch (Console.ReadLine())
+        {
+            case "1":
+                GameMenu();
+                break;
+            default:
+                Console.WriteLine("Invalid input");
+                break;
+        }
     }
 
     #endregion

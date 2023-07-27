@@ -8,6 +8,17 @@ internal class GameEngine
     private List<Route> Routes { get; } = new();
     private Random Random { get; } = new(DateTime.Now.Millisecond);
 
+    public void ProcessNextRound()
+    {
+        SettlementEngine.ProcessNextRound();
+
+        foreach (var route in Routes) 
+        {
+            route.SettlementBegin.Population++;
+            route.SettlementEnd.Population++;
+        }
+    }
+
     public void AddSettlement(string name, string description)
     {
         if (SettlementEngine.Settlements.Count == 0)

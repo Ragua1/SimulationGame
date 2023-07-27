@@ -23,11 +23,15 @@ internal class SettlementEngine
 
         for (int i = 0; i < 5; i++)
         {
-            Settlements.Add(new Settlement
-            {
-                Name = names[i],
-                Description = descriptions[i]
-            });
+            AddSettlement(names[i], descriptions[i]);
+            
+        }
+    }
+    public void ProcessNextRound()
+    {
+        foreach (var settlement in Settlements)
+        {
+
         }
     }
 
@@ -37,8 +41,6 @@ internal class SettlementEngine
         {
             Name = name,
             Description = description,
-            //Type = type,
-            //Population = population,
         };
 
         GeneratePopulation(settlement);
@@ -53,7 +55,7 @@ internal class SettlementEngine
 
     public void GeneratePopulation(Settlement settlement)
     {
-        settlement.Population = Random.Next(1 - 100);
+        settlement.Population = Random.Next(1, 100);
     }
 
     public static void ChceckSettlementSize(Settlement settlement)
