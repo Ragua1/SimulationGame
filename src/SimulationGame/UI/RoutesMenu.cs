@@ -85,7 +85,7 @@ namespace SimulationGame.UI
             // TODO if route exists, throw exception
             // TODO add input protection
 
-            GameEngine.AddRoad(name, settlements[int.Parse(a) - 1], settlements[int.Parse(b) - 1]);
+            GameEngine.AddRoute(name, settlements[int.Parse(a) - 1], settlements[int.Parse(b) - 1]);
 
             //GameMenu();
         }

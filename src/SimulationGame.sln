@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulationGame", "Simulatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimulationGame.Test", "SimulationGame.Test\SimulationGame.Test.csproj", "{BBF45D53-8AAF-4220-A631-9840391E34F4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimulationGame.API", "SimulationGame.API\SimulationGame.API.csproj", "{350CAC70-9DB7-413D-B5CC-9854850CC95D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimulationGame.Service", "SimulationGame.Service\SimulationGame.Service.csproj", "{095F02DE-013E-4AE2-94FB-F4F6482F3C43}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{BBF45D53-8AAF-4220-A631-9840391E34F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBF45D53-8AAF-4220-A631-9840391E34F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBF45D53-8AAF-4220-A631-9840391E34F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{350CAC70-9DB7-413D-B5CC-9854850CC95D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{350CAC70-9DB7-413D-B5CC-9854850CC95D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{350CAC70-9DB7-413D-B5CC-9854850CC95D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{350CAC70-9DB7-413D-B5CC-9854850CC95D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{095F02DE-013E-4AE2-94FB-F4F6482F3C43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{095F02DE-013E-4AE2-94FB-F4F6482F3C43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{095F02DE-013E-4AE2-94FB-F4F6482F3C43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{095F02DE-013E-4AE2-94FB-F4F6482F3C43}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,6 +1,6 @@
 ﻿namespace SimulationGame.Models
 {
-    internal interface IElement
+    public interface IElement
     {
         string Name { get; set; }
     }

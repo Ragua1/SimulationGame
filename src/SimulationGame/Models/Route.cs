@@ -2,7 +2,7 @@
 
 namespace SimulationGame.Models;
 
-internal class Route : IElement
+internal class Route : IDestination
 {
     public Settlement SettlementBegin { get; set; }
     public Settlement SettlementEnd { get; set; }

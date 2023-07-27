@@ -2,7 +2,7 @@
 
 namespace SimulationGame.Models;
 
-internal class Settlement : IElement
+internal class Settlement : IDestination
 {
     public string Description { get; set; }
     public SettlementTypes Type { get; set; }

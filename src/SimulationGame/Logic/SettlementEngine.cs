@@ -15,16 +15,17 @@ internal class SettlementEngine
     
     public void GenerateNew()
     {
-        string[] names = new string[] { "Markéta", "Romana", "Maruše", "Dana", "Karlička" };
-        string[] descriptions = new string[5];
+        var names = new [] { "Markéta", "Romana", "Maruše", "Dana", "Karlička" };
+        var descriptions = new []
+        {
+            "Settlement in a desert, built by wealthy oil magnates",
+            "Settlement in mountains, previously used to raise goats",
+            "Settlement by a large river, that was used to deliver wood",
+            "Settlement, built around a castle. Historic location indeed",
+            "Settlement with large amount of fields and tractors",
+        };
 
-        descriptions[0] = "Settlement in a desert, built by wealthy oil magnates";
-        descriptions[1] = "Settlement in mountains, previously used to raise goats";
-        descriptions[2] = "Settlement by a large river, that was used to deliver wood";
-        descriptions[3] = "Settlement, built around a castle. Historic location indeed";
-        descriptions[4] = "Settlement with large amount of fields and tractors";
-
-        for (int i = 0; i < 5; i++)
+        for (var i = 0; i < 5; i++)
         {
             AddSettlement(names[i], descriptions[i]);
         }

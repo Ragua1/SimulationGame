@@ -5,7 +5,8 @@ namespace SimulationGame.Test
 {
     [TestClass]
     public class SettlementEngine_Tests
-    {[TestMethod]
+    {
+        [TestMethod]
         public void Test_AddSettlement_ShouldAddSettlementToSettlementsList()
         {
             // Arrange

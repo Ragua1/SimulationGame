@@ -4,7 +4,7 @@ using SimulationGame.UI;
 
 namespace SimulationGame.Logic;
 
-internal class GameLogic
+public class GameLogic
 {
     private const string SettlementsFile = "settlements.json";
     private const string RoutesFile = "routes.json";
