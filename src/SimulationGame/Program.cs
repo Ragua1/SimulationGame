@@ -3,7 +3,7 @@
 Console.WriteLine("Hello, Player!");
 
 var game = new GameLogic();
-game.LoadGame();
-game.GameMenu();
+game.NewGame();
+//game.LoadGame();
 
 Console.WriteLine("Bye!");

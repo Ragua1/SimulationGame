@@ -6,11 +6,8 @@ internal class GameEngine
 {
     private SettlementEngine SettlementEngine { get; set; } = new();
     private VehicleEngine VehicleEngine { get; set; } = new();
-    private List<Route> Routes { get; set; } = new();
+    private RouteEngine RouteEngine { get; set; } = new();
     private Random Random { get; } = new(DateTime.Now.Millisecond);
-    private int SettlementId { get; set; }
-    private int RouteId { get; set; }
-    private int VehicleId { get; set; }
 
 
     // Next round logic
@@ -32,7 +29,7 @@ internal class GameEngine
         // TODO: Population changes
         // This one doesn't applies the rules. Its effect is just for testing
         // Cars adds a lot of headaches. Let's apply them later
-        foreach (var route in Routes)
+        foreach (var route in RouteEngine.GetRoutes())
         {
             route.SettlementBegin.Population--;
             route.SettlementEnd.Population += 2;
@@ -95,44 +92,11 @@ internal class GameEngine
     public void InitGameEngine(List<Settlement>? settlements = null, List<Route>? routes = null)
     {
         SettlementEngine.InitSettlementEngine(settlements);
-        Routes = routes ?? new List<Route>();
-        SetId();
+        RouteEngine.InitRouteEngine(routes);
 
         if (!SettlementEngine.GetSettlements().Any())
         {
-            SettlementId = 1;
-            RouteId = 1;
-            VehicleId = 1;
-            SettlementEngine.GenerateNew(SettlementId);
-            SetId();
-        }
-    }
-
-    // Set starting ID values according to the highest ID of each object type
-    private void SetId()
-    {
-        foreach (Settlement s in GetSettlements())
-        {
-            if (s.Id > SettlementId)
-            {
-                SettlementId = s.Id + 1;
-            }
-        }
-
-        foreach (Route r in GetRoutes())
-        {
-            if (r.Id > RouteId)
-            {
-                r.Id = RouteId + 1;
-            }
-        }
-
-        foreach (Vehicle v in GetVehicles())
-        {
-            if(v.Id > VehicleId)
-            {
-                v.Id = VehicleId + 1;
-            }
+            SettlementEngine.GenerateNew();
         }
     }
 
@@ -140,9 +104,7 @@ internal class GameEngine
     // Population generates automatically
     public void AddSettlement(string name, string description)
     {
-        SettlementEngine.AddSettlement(name, description, SettlementId);
-
-        SettlementId++;
+        SettlementEngine.AddSettlement(name, description);
     }
 
     // Return a list of settlements
@@ -154,9 +116,9 @@ internal class GameEngine
     // Remove settlement and all atached routes
     public void RemoveSettlement(Settlement settlement)
     {
-        foreach (var route in Routes.Where(x => x.SettlementBegin == settlement || x.SettlementEnd == settlement))
+        foreach (var route in RouteEngine.GetRoutes().Where(x => x.SettlementBegin == settlement || x.SettlementEnd == settlement))
         {
-            RemoveRoutes(route);
+            RemoveRoute(route);
         }
 
         SettlementEngine.RemoveSettlement(settlement);
@@ -165,30 +127,18 @@ internal class GameEngine
     // Add route with name, begining and the end
     public void AddRoute(string name, Settlement settlementBegin, Settlement settlementEnd)
     {
-        Routes.Add(new Route
-        {
-            Name = name,
-            SettlementBegin = settlementBegin,
-            SettlementEnd = settlementEnd,
-            Id = RouteId
-        });
-
-        RouteId++;
+        RouteEngine.AddRoute(name, settlementBegin, settlementEnd);
     }
 
     // Return a list of routes of a given settlement, or all routes
     public List<Route> GetRoutes(Settlement? settlement = null)
     {
-        if (settlement != null)
-        {
-            return Routes.Where(r => r.SettlementBegin == settlement || r.SettlementEnd == settlement).ToList();
-        }
-        return Routes;
+        return RouteEngine.GetRoutes();
     }
 
-    public void RemoveRoutes(Route route)
+    public void RemoveRoute(Route route)
     {
-        Routes.Remove(route);
+        RouteEngine.RemoveRoute(route);
     }
 
     public List<Vehicle> GetVehicles()

@@ -2,9 +2,14 @@
 
 namespace SimulationGame.Logic;
 
-public class VehicleEngine
+internal class VehicleEngine : BaseEngine
 {
-    private List<Vehicle> Vehicles { get; set; } = new();
+    // maps (type) elements to Vehicles
+    private List<Vehicle> Vehicles
+    {
+        get => Elements.Cast<Vehicle>().ToList();
+        set => Elements = value.Cast<IElement>().ToList();
+    }
     //private List<(Vehicle Vehicle, IDestination Destination)> VehicleDestinations { get; set; } = new();
 
     public List<Vehicle> GetVehicles()
@@ -14,9 +19,15 @@ public class VehicleEngine
     
     public void AddVehicle(string name, string type, IDestination destination)
     {
-        var vehicle = new Vehicle { Name = name, Type = type, Destination = destination};
+        var vehicle = new Vehicle
+        {
+            Name = name, 
+            Type = type, 
+            Destination = destination,
+            Id = NewId(),
+        };
         
-        Vehicles.Add(vehicle);
+        Elements.Add(vehicle);
         // VehicleDestinations.Add((vehicle, destination));
     }
     

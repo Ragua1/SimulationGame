@@ -152,7 +152,7 @@ namespace SimulationGame.UI
 
             var x = Extensions.InputToInt();
 
-            GameEngine.RemoveRoutes(routes[x - 1]);
+            GameEngine.RemoveRoute(routes[x - 1]);
         }
 
         public void ViewRoutes()

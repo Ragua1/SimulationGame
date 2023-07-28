@@ -3,17 +3,23 @@ using SimulationGame.Models;
 
 namespace SimulationGame.Logic;
 
-internal class SettlementEngine
+internal class SettlementEngine : BaseEngine
 {
-    private List<Settlement> Settlements { get; set; } = new List<Settlement>();
-    private Random Random { get; } = new(DateTime.Now.Millisecond);
+    // only cast (type) elements to settlements
+    // !!!MUST NOT!!! add new settlements to this collection, use Elements collection instead
+    private List<Settlement> Settlements
+    {
+        get => Elements.Cast<Settlement>().ToList();
+        set => Elements = value.Cast<IElement>().ToList();
+    }
 
     public void InitSettlementEngine(List<Settlement>? settlements = null)
     {
         Settlements = settlements ?? new List<Settlement>();
     }
+    
 
-    public void GenerateNew(int id)
+    public void GenerateNew()
     {
         var names = new[] { "Markéta", "Romana", "Maruše", "Dana", "Karlička" };
         var descriptions = new[]
@@ -27,33 +33,18 @@ internal class SettlementEngine
 
         for (var i = 0; i < 5; i++)
         {
-            AddSettlement(names[i], descriptions[i], id);
-            id++;
+            AddSettlement(names[i], descriptions[i]);
         }
     }
     public void ProcessNextRound()
     {
         foreach (var settlement in Settlements)
         {
-            ChceckSettlementSize(settlement);
+            CheckSettlementSize(settlement);
         }
     }
 
-    public void AddSettlement(string name, string description, int id)
-    {
-        var settlement = new Settlement
-        {
-            Name = name,
-            Description = description,
-            Id = id,
-        };
-
-        GeneratePopulation(settlement);
-
-        Settlements.Add(settlement);
-    }
-
-    internal void AddSettlement(string name, string description, SettlementTypes type, int population)
+    internal void AddSettlement(string name, string description, SettlementTypes type = SettlementTypes.Village, int population = 0)
     {
         var settlement = new Settlement
         {
@@ -61,11 +52,13 @@ internal class SettlementEngine
             Description = description,
             Type = type,
             Population = population,
+            Id = NewId(),
         };
 
         GeneratePopulation(settlement);
 
-        Settlements.Add(settlement);
+        // new element must be add to the Elements collection, not in the Settlements collection
+        Elements.Add(settlement);
     }
 
     public List<Settlement> GetSettlements()
@@ -83,7 +76,7 @@ internal class SettlementEngine
         settlement.Population = Random.Next(1, 100);
     }
 
-    public static void ChceckSettlementSize(Settlement settlement)
+    public static void CheckSettlementSize(Settlement settlement)
     {
         settlement.Type = settlement.Population switch
         {
