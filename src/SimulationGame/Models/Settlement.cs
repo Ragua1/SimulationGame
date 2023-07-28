@@ -8,4 +8,5 @@ internal class Settlement : IDestination
     public SettlementTypes Type { get; set; }
     public int Population { get; set; }
     public string Name { get; set; }
+    public int Id { get; set; }
 }

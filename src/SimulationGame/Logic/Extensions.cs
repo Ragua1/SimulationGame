@@ -16,5 +16,26 @@ namespace SimulationGame.Logic
                 Console.WriteLine($"{i + 1}: {e.Name}");
             }
         }
+
+        /// <summary>
+        /// Try parse input to integer
+        /// </summary>
+        /// <returns></returns>
+        public static int InputToInt()
+        {
+            int result = 0;
+            bool parse = false;
+
+            while (!parse)
+            {
+                parse = int.TryParse(Console.ReadLine(), out result);
+
+                if (!parse)
+                {
+                    Console.WriteLine("Invalid input. Must be whole number.");
+                }
+            }
+            return result;
+        }
     }
 }

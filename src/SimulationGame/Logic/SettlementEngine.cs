@@ -12,11 +12,11 @@ internal class SettlementEngine
     {
         Settlements = settlements ?? new List<Settlement>();
     }
-    
-    public void GenerateNew()
+
+    public void GenerateNew(int id)
     {
-        var names = new [] { "Markéta", "Romana", "Maruše", "Dana", "Karlička" };
-        var descriptions = new []
+        var names = new[] { "Markéta", "Romana", "Maruše", "Dana", "Karlička" };
+        var descriptions = new[]
         {
             "Settlement in a desert, built by wealthy oil magnates",
             "Settlement in mountains, previously used to raise goats",
@@ -27,7 +27,8 @@ internal class SettlementEngine
 
         for (var i = 0; i < 5; i++)
         {
-            AddSettlement(names[i], descriptions[i]);
+            AddSettlement(names[i], descriptions[i], id);
+            id++;
         }
     }
     public void ProcessNextRound()
@@ -38,12 +39,13 @@ internal class SettlementEngine
         }
     }
 
-    public void AddSettlement(string name, string description)
+    public void AddSettlement(string name, string description, int id)
     {
         var settlement = new Settlement
         {
             Name = name,
             Description = description,
+            Id = id,
         };
 
         GeneratePopulation(settlement);
@@ -65,7 +67,7 @@ internal class SettlementEngine
 
         Settlements.Add(settlement);
     }
-    
+
     public List<Settlement> GetSettlements()
     {
         return Settlements;
@@ -78,7 +80,7 @@ internal class SettlementEngine
 
     public void GeneratePopulation(Settlement settlement)
     {
-        //settlement.Population = Random.Next(1, 100);
+        settlement.Population = Random.Next(1, 100);
     }
 
     public static void ChceckSettlementSize(Settlement settlement)

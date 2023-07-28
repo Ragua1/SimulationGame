@@ -14,35 +14,33 @@ namespace SimulationGame.UI
 
         public void SettlementsMainMenu()
         {
-            while (true)
+            // Menu header
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("\n--- Settlements Menu ---\n");
+            Console.ForegroundColor = ConsoleColor.White;
+
+            var settlements = GameEngine.GetSettlements();
+            settlements.ShowListOfElements();
+
+            // Menu options
+            Console.WriteLine("\nSelect actions:");
+            Console.WriteLine("0. Back to Main Menu");
+            Console.WriteLine("1. Settlement details");
+            Console.WriteLine("2. Create settlement");
+
+            var input = 3;
+            while (input > 2)
             {
-                // Menu header
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("--- Settlements Menu ---");
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine();
-
-                var settlements = GameEngine.GetSettlements();
-                settlements.ShowListOfElements();
-                Console.WriteLine();
-
-                // Menu options
-                Console.WriteLine("Select actions:");
-                Console.WriteLine("1. Settlement details");
-                Console.WriteLine("2. Create settlement");
-                Console.WriteLine("3. Back to Main Menu");
-
-                var input = Console.ReadLine();
+                input = Extensions.InputToInt();
                 switch (input)
                 {
-                    case "1":
+                    case 1:
                         SettlementDetails();
                         break;
-                    case "2":
+                    case 2:
                         CreateSettlement();
                         break;
-                    case "3":
+                    case 0:
                         return;
                     default:
                         Console.WriteLine("Invalid input");
@@ -54,11 +52,9 @@ namespace SimulationGame.UI
         private void CreateSettlement()
         {
             // Menu header
-            Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("--- Create settlement ---");
+            Console.WriteLine("\n--- Create settlement ---\n");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine();
 
             Console.Write("Name: ");
             var name = Console.ReadLine();
@@ -66,41 +62,32 @@ namespace SimulationGame.UI
             var description = Console.ReadLine();
 
             GameEngine.AddSettlement(name, description);
-
-            //GameMenu();
         }
 
         public void SettlementDetails()
         {
             // Menu header
-            Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("--- Settlements Details ---");
+            Console.WriteLine("\n--- Settlements Details ---\n");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine();
 
             var settlements = GameEngine.GetSettlements();
             if (!settlements.Any())
             {
-                Console.WriteLine("There are no settlements!");
-                Console.WriteLine();
+                Console.WriteLine("There are no settlements!\n");
                 return;
             }
 
-            Console.WriteLine("Which settlement do you want to see?");
-            Console.WriteLine();
+            Console.WriteLine("Which settlement do you want to see?\n");
             settlements.ShowListOfElements();
-            Console.WriteLine();
 
-            // TODO add input protection
+            var x = Extensions.InputToInt();
+            Settlement settlement = (settlements[x - 1]);
 
-            var x = Console.ReadLine();
-            Console.WriteLine();
-            Settlement settlement = (settlements[int.Parse(x) - 1]);
-
-            Console.WriteLine($"Name: {settlement.Name}");
+            Console.WriteLine($"\nName: {settlement.Name}");
             Console.WriteLine($"Description: {settlement.Description}");
             Console.WriteLine($"Population: {settlement.Population}");
+            Console.WriteLine($"ID: {settlement.Id}");
             Console.WriteLine($"Routes:");
 
             List<Route> routes = GameEngine.GetRoutes(settlement);
@@ -113,8 +100,7 @@ namespace SimulationGame.UI
                 routes.ShowListOfElements();
             }
 
-            Console.WriteLine();
-            Console.WriteLine("Press enter");
+            Console.WriteLine("\nPress enter");
             Console.ReadLine();
         }
     }
